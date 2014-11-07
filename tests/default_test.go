@@ -6,7 +6,7 @@ import (
 	"testing"
 	"runtime"
 	"path/filepath"
-	_ "github.com/lapingvino/soneli.ga/soneli.ga/routers"
+	_ "github.com/lapingvino/soneli.ga/routers"
 
 	"github.com/astaxie/beego"
 	. "github.com/smartystreets/goconvey/convey"
