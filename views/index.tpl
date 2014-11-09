@@ -2,7 +2,7 @@
 
 <html>
   	<head>
-    	<title>Beego</title>
+    	<title>Baldaŭ: soneli.ga, por ĉiu via Esperanto-muziko</title>
     	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 		<style type="text/css">
