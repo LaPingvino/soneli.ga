@@ -66,13 +66,13 @@
 			<div class="container">
 			<div class="row">
 			  <div class="hero-text">
-			    <h1>Welcome to Beego!</h1>
+			    <h1>Bonvenon ĉe soneli.ga!</h1>
 			    <p class="description">
-			    	Beego is a simple & powerful Go web framework which is inspired by tornado and sinatra.
+			    	Baldaŭ ĉi tie venos retejo por porti la Esperantan muzikon al la nuna cifereca epoko.
 			    <br />
-			    	Official website: <a href="http://{{.Website}}">{{.Website}}</a>
+			    	Nun ankoraŭ nenio videblas ĉi tie, sed vi jam povas kontakti nin por engaĝiĝi en la estonteco de la Esperanta muziko: libera kaj tute en viaj manoj!
 			    <br />
-			    	Contact me: {{.Email}}
+			    	Kontaktu min: <a href="mailto:{{.Email}}">{{.Email}}</a>
 			    </p>
 			  </div>
 			</div>
