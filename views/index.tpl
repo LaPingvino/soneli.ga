@@ -72,6 +72,8 @@
 			    <br />
 			    	Nun ankoraŭ nenio videblas ĉi tie, sed vi jam povas kontakti nin por engaĝiĝi en la estonteco de la Esperanta muziko: libera kaj tute en viaj manoj!
 			    <br />
+				<a href="{{.Website}}">Kial do soneli.ga?</a>
+			    <br />
 			    	Kontaktu min: <a href="mailto:{{.Email}}">{{.Email}}</a>
 			    </p>
 			  </div>
