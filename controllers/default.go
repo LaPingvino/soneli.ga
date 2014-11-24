@@ -55,8 +55,8 @@ func (this *MailReceiver) Get() {
 
 type MandrillJSON []struct {
 	Msg struct {
-		RawMsg string `json:raw_msg`
-	} `json:msg`
+		Raw_Msg string
+	}
 }
 
 func (this *MailReceiver) Post() {
@@ -73,14 +73,14 @@ func (this *MailReceiver) Post() {
 	}
 	beego.Info("mandrill_events arrived")
 	beego.Info("Contents: " + getjson)
-	beego.Info("Raw message: " + mj[0].Msg.RawMsg)
+	beego.Info("Raw message: " + mj[0].Msg.Raw_Msg)
 	auth := smtp.PlainAuth("", beego.AppConfig.String("mailuser"),
 		beego.AppConfig.String("mailauth"),
 		strings.Split(beego.AppConfig.String("mailserver"), ":")[0])
 	beego.Info("Auth: " + fmt.Sprintln(auth))
 	err = smtp.SendMail(beego.AppConfig.String("mailserver"),
 		auth, "forward@soneli.ga",
-		strings.Split(beego.AppConfig.String("mailto"), ";"), []byte(mj[0].Msg.RawMsg))
+		strings.Split(beego.AppConfig.String("mailto"), ";"), []byte(mj[0].Msg.Raw_Msg))
 	if err != nil {
 		beego.Error(err.Error())
 	}
