@@ -67,7 +67,7 @@ func (this *MailReceiver) Post() {
 	beego.Info("Auth: " + fmt.Sprintln(auth))
 	err := smtp.SendMail(beego.AppConfig.String("mailserver"),
 		auth, "forward@soneli.ga",
-		strings.Split(beego.AppConfig.String("mailto"), ";"), []byte(json))
+		strings.Split(beego.AppConfig.String("mailto"), ";"), []byte("Here comes the message in json-format:\n"+json))
 	if err != nil {
 		beego.Error(err.Error())
 	}
