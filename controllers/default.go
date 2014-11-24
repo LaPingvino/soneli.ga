@@ -46,6 +46,12 @@ func (this *EkPaĝo) Get() {
 	this.Data["Contents"] = template.HTML(md.MarkdownBasic(body))
 }
 
+func (this *MailReceiver) Get() {
+	this.TplNames = "ek.tpl"
+	this.Data["Title"] = ""
+	this.Data["Contents"] = ""
+}
+
 func (this *MailReceiver) Post() {
 	this.TplNames = "ek.tpl"
 	json := this.GetString("mandrill_events")
