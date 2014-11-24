@@ -53,7 +53,7 @@ func (this *MailReceiver) Get() {
 	this.Data["Contents"] = ""
 }
 
-type mandrillJson []struct {
+type MandrillJSON []struct {
 	Msg struct {
 		RawMsg string `json:raw_msg`
 	} `json:msg`
@@ -66,7 +66,7 @@ func (this *MailReceiver) Post() {
 	if len(getjson) < 1 {
 		return
 	}
-	var mj mandrillJson
+	var mj MandrillJSON
 	err := json.Unmarshal([]byte(getjson), &mj)
 	if err != nil {
 		beego.Error(err.Error())
