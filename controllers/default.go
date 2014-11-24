@@ -1,9 +1,12 @@
 package controllers
 
 import (
+	"fmt"
+	"html/template"
 	"io/ioutil"
 	"net/http"
-	"html/template"
+	"net/smtp"
+	"strings"
 
 	"github.com/astaxie/beego"
 	md "github.com/russross/blackfriday"
@@ -14,6 +17,10 @@ type MainController struct {
 }
 
 type EkPaĝo struct {
+	beego.Controller
+}
+
+type MailReceiver struct {
 	beego.Controller
 }
 
@@ -37,4 +44,25 @@ func (this *EkPaĝo) Get() {
 		beego.Error(err.Error())
 	}
 	this.Data["Contents"] = template.HTML(md.MarkdownBasic(body))
+}
+
+func (this *MailReceiver) Post() {
+	this.TplNames = "ek.tpl"
+	json := this.GetString("mandrill_events")
+	this.Data["Contents"] = json
+	if len(json) < 1 {
+		return
+	}
+	beego.Info("mandrill_events arrived")
+	beego.Info("Contents: " + json)
+	auth := smtp.PlainAuth("", beego.AppConfig.String("mailuser"),
+		beego.AppConfig.String("mailauth"),
+		strings.Split(beego.AppConfig.String("mailserver"), ":")[0])
+	beego.Info("Auth: " + fmt.Sprintln(auth))
+	err := smtp.SendMail(beego.AppConfig.String("mailserver"),
+		auth, "forward@soneli.ga",
+		strings.Split(beego.AppConfig.String("mailto"), ";"), []byte(json))
+	if err != nil {
+		beego.Error(err.Error())
+	}
 }
