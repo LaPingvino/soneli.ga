@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"io/ioutil"
@@ -52,22 +53,34 @@ func (this *MailReceiver) Get() {
 	this.Data["Contents"] = ""
 }
 
+type mandrillJson []struct {
+	Msg struct {
+		RawMsg string `json:raw_msg`
+	} `json:msg`
+}
+
 func (this *MailReceiver) Post() {
 	this.TplNames = "ek.tpl"
-	json := this.GetString("mandrill_events")
-	this.Data["Contents"] = json
-	if len(json) < 1 {
+	getjson := this.GetString("mandrill_events")
+	this.Data["Contents"] = getjson
+	if len(getjson) < 1 {
 		return
 	}
+	var mj mandrillJson
+	err := json.Unmarshal([]byte(getjson), &mj)
+	if err != nil {
+		beego.Error(err.Error())
+	}
 	beego.Info("mandrill_events arrived")
-	beego.Info("Contents: " + json)
+	beego.Info("Contents: " + getjson)
+	beego.Info("Raw message: " + mj[0].Msg.RawMsg)
 	auth := smtp.PlainAuth("", beego.AppConfig.String("mailuser"),
 		beego.AppConfig.String("mailauth"),
 		strings.Split(beego.AppConfig.String("mailserver"), ":")[0])
 	beego.Info("Auth: " + fmt.Sprintln(auth))
-	err := smtp.SendMail(beego.AppConfig.String("mailserver"),
+	err = smtp.SendMail(beego.AppConfig.String("mailserver"),
 		auth, "forward@soneli.ga",
-		strings.Split(beego.AppConfig.String("mailto"), ";"), []byte("Here comes the message in json-format:\n"+json))
+		strings.Split(beego.AppConfig.String("mailto"), ";"), []byte(mj[0].Msg.RawMsg))
 	if err != nil {
 		beego.Error(err.Error())
 	}
