@@ -9,20 +9,20 @@ import (
 	"net/smtp"
 	"strings"
 
-	"github.com/astaxie/beego"
+	"github.com/astaxie/beegae"
 	md "github.com/russross/blackfriday"
 )
 
 type MainController struct {
-	beego.Controller
+	beegae.Controller
 }
 
 type EkPaĝo struct {
-	beego.Controller
+	beegae.Controller
 }
 
 type MailReceiver struct {
-	beego.Controller
+	beegae.Controller
 }
 
 func (this *MainController) Get() {
@@ -37,12 +37,12 @@ func (this *EkPaĝo) Get() {
 	site, err := http.Get("http://wiki.lapingvino.nl/_showraw/Kial%20publikigi%20mian%20muzikon%20per%20soneli.ga")
 	if err != nil {
 		this.Data["Contents"] = "An error occured: " + err.Error()
-		beego.Error(err.Error())
+		beegae.Error(err.Error())
 	}
 	defer site.Body.Close()
 	body, err := ioutil.ReadAll(site.Body)
 	if err != nil {
-		beego.Error(err.Error())
+		beegae.Error(err.Error())
 	}
 	this.Data["Contents"] = template.HTML(md.MarkdownBasic(body))
 }
@@ -69,19 +69,19 @@ func (this *MailReceiver) Post() {
 	var mj MandrillJSON
 	err := json.Unmarshal([]byte(getjson), &mj)
 	if err != nil {
-		beego.Error(err.Error())
+		beegae.Error(err.Error())
 	}
-	beego.Info("mandrill_events arrived")
-	beego.Info("Contents: " + getjson)
-	beego.Info("Raw message: " + mj[0].Msg.Raw_Msg)
-	auth := smtp.PlainAuth("", beego.AppConfig.String("mailuser"),
-		beego.AppConfig.String("mailauth"),
-		strings.Split(beego.AppConfig.String("mailserver"), ":")[0])
-	beego.Info("Auth: " + fmt.Sprintln(auth))
-	err = smtp.SendMail(beego.AppConfig.String("mailserver"),
+	beegae.Info("mandrill_events arrived")
+	beegae.Info("Contents: " + getjson)
+	beegae.Info("Raw message: " + mj[0].Msg.Raw_Msg)
+	auth := smtp.PlainAuth("", beegae.AppConfig.String("mailuser"),
+		beegae.AppConfig.String("mailauth"),
+		strings.Split(beegae.AppConfig.String("mailserver"), ":")[0])
+	beegae.Info("Auth: " + fmt.Sprintln(auth))
+	err = smtp.SendMail(beegae.AppConfig.String("mailserver"),
 		auth, "forward@soneli.ga",
-		strings.Split(beego.AppConfig.String("mailto"), ";"), []byte(mj[0].Msg.Raw_Msg))
+		strings.Split(beegae.AppConfig.String("mailto"), ";"), []byte(mj[0].Msg.Raw_Msg))
 	if err != nil {
-		beego.Error(err.Error())
+		beegae.Error(err.Error())
 	}
 }

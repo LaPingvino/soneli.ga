@@ -1,12 +1,12 @@
 package routers
 
 import (
-	"github.com/astaxie/beego"
+	"github.com/astaxie/beegae"
 	"github.com/lapingvino/soneli.ga/controllers"
 )
 
 func init() {
-	beego.Router("/", &controllers.MainController{})
-	beego.Router("/ek", &controllers.EkPaĝo{})
-	beego.Router("/mandrill/"+beego.AppConfig.String("mailroute"), &controllers.MailReceiver{})
+	beegae.Router("/", &controllers.MainController{})
+	beegae.Router("/ek", &controllers.EkPaĝo{})
+	beegae.Router("/mandrill/"+beegae.AppConfig.String("mailroute"), &controllers.MailReceiver{})
 }
